@@ -8,7 +8,7 @@ export default function ForgetPassword() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [resetSuccess, setResetSuccess] = useState(false);
-    const [confirm, setConfirm] = useState(true);
+    const [errorMsg, setErrorMsg] = useState("");
 
     const handleConfirmPasswordChange = (e) => {
         setConfirmPassword(e.target.value);
@@ -19,11 +19,11 @@ export default function ForgetPassword() {
     }
 
     const handleReset = () => {
-        if (newPassword == confirmPassword && newPassword != "") {
-            setConfirm(true);
+        if (newPassword === confirmPassword && newPassword !== "") {
+            setErrorMsg("");
             requestSettingPassword();
         } else {
-            setConfirm(false);
+            setErrorMsg("Passwords do not match.")
         }
     }
 
@@ -41,18 +41,22 @@ export default function ForgetPassword() {
 
     return (
         <>
-            <form class="h-full flex flex-col items-center justify-around p-4 max-w-md mx-auto bg-white mt-10 rounded">
+            <form className="h-full flex flex-col items-center justify-around p-4 max-w-[496px] mx-auto bg-white mt-10 rounded">
 
-                <a href="https://www.freeiconspng.com/img/18350" title="Image from freeiconspng.com"><img width="60" src="https://www.freeiconspng.com/uploads/forgot-password-icon-9.png" alt="Forgot Password Svg Free" /></a>
+                <div className='flex flex-col items-center py-3'>
+                    <img width="60" src="./Group.png" alt="Forgot Password Svg Free" />
 
-                <h1 class="font-medium text-3xl text-center py-4 text-gray-800">Enter Your New Password</h1>
-                <div className='w-full'>
-                    <PasswordField label="Password*" handlePasswordChange={handleNewPasswordChange} password={newPassword} />
-                    <PasswordField label="Confirm Password*" handlePasswordChange={handleConfirmPasswordChange} password={confirmPassword} />
+                    <h1 className="font-sans text-xl font-bold text-center text-[#09101D]">Enter Your New Password</h1>
                 </div>
-                {!confirm && <p className="text-red-900"> Confirmation doesn't succeed. </p>}
+                <h1 className="hidden absolute font-sans text-xl font-normal text-center py-2 text-[#BEBBBB]">we will send a verification code to your email ID.</h1>
+                <h1 className="hidden absolute font-sans text-xl font-bold text-center py-2 text-[#323F4B]">Enter the verification code sent to your email</h1>
 
-                <button class="w-full hover:bg-[#F2385F]-900 bg-[#F2385F] text-white font-medium py-3 px-4 mt-10 rounded focus:outline-none focus:shadow-outline" type="button" onClick={handleReset}>
+                <div className='w-full py-3'>
+                    <PasswordField label="Password*" handlePasswordChange={handleNewPasswordChange} password={newPassword} errorMsg="" />
+                    <PasswordField label="Confirm Password*" handlePasswordChange={handleConfirmPasswordChange} password={confirmPassword} errorMsg={errorMsg} />
+                </div>
+
+                <button className="w-full hover:bg-[#F2385F]-900 bg-[#F2385F] text-white font-medium py-3 px-4 mt-10 rounded focus:outline-none focus:shadow-outline" type="button" onClick={handleReset}>
                     Reset
                 </button>
 
